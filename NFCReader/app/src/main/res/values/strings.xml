@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NFCReader</string>
+    <string name="explanation">Tap device with NFC tag</string>
+</resources>
