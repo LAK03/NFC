@@ -33,33 +33,55 @@
         android:id="@+id/mainLyt">
 
         <TextView
-            android:id="@+id/cLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Content"
-            />
-
-        <EditText
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cLabel"
-            android:lines="3"
-            android:maxLines="4" />
-
-        <TextView
             android:id="@+id/cLabel1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NFC Type"
-            android:layout_below="@id/content"
+            android:text="Product Id"
             />
 
+        <EditText
+            android:id="@+id/productId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cLabel1" />
+        <TextView
+            android:id="@+id/cLabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productId"
+            android:text="Product Name"
+            />
+        <EditText
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cLabel2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp" />
+        <TextView
+            android:id="@+id/cLabel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/productName"
+            android:text="Price"
+            />
+        <EditText
+            android:id="@+id/productPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cLabel3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp" />
         <Spinner
             android:id="@+id/tagType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cLabel1" />
+            android:layout_below="@id/productPrice"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
 
     </RelativeLayout>
 

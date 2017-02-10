@@ -31,10 +31,12 @@ import java.io.IOError;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private NFCManager nfcMger;
+    public static ArrayList<String> productDetails = new ArrayList<String>();
 
     private View v;
     private NdefMessage message = null;
@@ -57,14 +59,22 @@ public class MainActivity extends AppCompatActivity {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(aa);
 
-        final EditText et = (EditText) findViewById(R.id.content);
+        final EditText et1 = (EditText) findViewById(R.id.productId);
+        final EditText et2 = (EditText) findViewById(R.id.productName);
+        final EditText et3 = (EditText) findViewById(R.id.productPrice);
+
 
         FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int pos = sp.getSelectedItemPosition();
-                String content = et.getText().toString();
+                String productId = et1.getText().toString();
+                String productName = et2.getText().toString();
+                String productPrice = et3.getText().toString();
+
+                String content = "Product Id : "+ productId + "\n" +"Product Name : "+productName + "\n" +"Product Price : "+productPrice;
+                // productDetails.add(content);
 
                 switch (pos) {
                     case 0:
