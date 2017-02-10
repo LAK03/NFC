@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton"
+        android:layout_alignBaseline="@+id/accountsExpenses_msgText"
+        android:layout_alignBottom="@+id/accountsExpenses_msgText"
+        android:layout_alignLeft="@+id/toggleButton1"
+        android:layout_alignStart="@+id/toggleButton1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Enable Tag Writer"
+        android:textSize="20dp"
+        android:id="@+id/enblewriter"
+        android:layout_marginTop="66dp"
+        android:layout_below="@+id/toggleButton"
+        android:layout_alignLeft="@+id/accountsExpenses_msgText"
+        android:layout_alignStart="@+id/accountsExpenses_msgText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Enable Multi Tag Reader"
+        android:textSize="20dp"
+        android:id="@+id/enblemultireader"
+        android:layout_marginTop="78dp"
+        android:layout_below="@+id/enblewriter"
+        android:layout_alignLeft="@+id/enblewriter"
+        android:layout_alignStart="@+id/enblewriter" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton1"
+        android:layout_alignBaseline="@+id/enblemultireader"
+        android:layout_alignBottom="@+id/enblemultireader"
+        android:layout_alignLeft="@+id/toggleButton2"
+        android:layout_alignStart="@+id/toggleButton2" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButton2"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_alignBaseline="@+id/enblewriter"
+        android:layout_alignBottom="@+id/enblewriter"
+        android:layout_toRightOf="@+id/enblemultireader"
+        android:layout_toEndOf="@+id/enblemultireader" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Enable Tag Reader"
+        android:textSize="20dp"
+        android:id="@+id/accountsExpenses_msgText"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
