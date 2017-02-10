@@ -1,6 +1,4 @@
-package com.survivingwithandroid.nfcwriter;
-
-
+package com.example.coco.coconfctag;
 
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -33,7 +31,10 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+
+
+public class NfcWriter extends AppCompatActivity {
+
 
     private NFCManager nfcMger;
     public static ArrayList<String> productDetails = new ArrayList<String>();
@@ -43,10 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     Tag currentTag;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_nfc_writer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (message != null) {
 
-                    dialog = new ProgressDialog(MainActivity.this);
+                    dialog = new ProgressDialog(NfcWriter.this);
                     dialog.setMessage("Tag NFC Tag please");
                     dialog.show();;
                 }
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -172,8 +176,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
-
-
 }
