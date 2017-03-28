@@ -24,6 +24,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOError;
 import java.io.IOException;
@@ -49,24 +52,17 @@ public class NfcWriter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_writer);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         nfcMger = new NFCManager(this);
-
         v = findViewById(R.id.mainLyt);
-
         final Spinner sp = (Spinner) findViewById(R.id.tagType);
         ArrayAdapter<CharSequence> aa = ArrayAdapter.createFromResource(this, R.array.tagContentType, android.R.layout.simple_spinner_dropdown_item);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp.setAdapter(aa);
-
         final EditText et1 = (EditText) findViewById(R.id.productId);
         final EditText et2 = (EditText) findViewById(R.id.productName);
         final EditText et3 = (EditText) findViewById(R.id.productPrice);
-
-
         FloatingActionButton btn = (FloatingActionButton) findViewById(R.id.fab);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,10 +71,14 @@ public class NfcWriter extends AppCompatActivity {
                 String productId = et1.getText().toString();
                 String productName = et2.getText().toString();
                 String productPrice = et3.getText().toString();
-
                 String content = "Product Id : "+ productId + "\n" +"Product Name : "+productName + "\n" +"Product Price : "+productPrice;
                 // productDetails.add(content);
-
+                JSONObject jobj=new JSONObject();
+                try {
+                    jobj.put("id",productId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 switch (pos) {
                     case 0:
                         message =  nfcMger.createUriMessage(content, "http://");
@@ -87,10 +87,9 @@ public class NfcWriter extends AppCompatActivity {
                         message =  nfcMger.createUriMessage(content, "tel:");
                         break;
                     case 2:
-                        message =  nfcMger.createTextMessage(content);
+                        message =  nfcMger.createTextMessage(jobj.toString());
                         break;
                 }
-
                 if (message != null) {
 
                     dialog = new ProgressDialog(NfcWriter.this);
@@ -99,7 +98,6 @@ public class NfcWriter extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 
@@ -116,12 +114,10 @@ public class NfcWriter extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -131,11 +127,9 @@ public class NfcWriter extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         try {
             nfcMger.verifyNFC();
             //nfcMger.enableDispatch();
-
             Intent nfcIntent = new Intent(this, getClass());
             nfcIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, nfcIntent, 0);
@@ -150,7 +144,6 @@ public class NfcWriter extends AppCompatActivity {
         catch(NFCManager.NFCNotEnabled nfcnEn) {
             Snackbar.make(v, "NFC Not enabled", Snackbar.LENGTH_LONG).show();
         }
-
     }
 
 

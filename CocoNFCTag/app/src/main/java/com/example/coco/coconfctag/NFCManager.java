@@ -108,10 +108,8 @@ public class NFCManager {
             // Get UTF-8 byte
             byte[] lang = Locale.getDefault().getLanguage().getBytes("UTF-8");
             byte[] text = content.getBytes("UTF-8"); // Content in UTF-8
-
             int langSize = lang.length;
             int textLength = text.length;
-
             ByteArrayOutputStream payload = new ByteArrayOutputStream(1 + langSize + textLength);
             payload.write((byte) (langSize & 0x1F));
             payload.write(lang, 0, langSize);
@@ -122,7 +120,6 @@ public class NFCManager {
         catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

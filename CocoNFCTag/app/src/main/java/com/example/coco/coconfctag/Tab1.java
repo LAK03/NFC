@@ -12,6 +12,9 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.coco.coconfctag.multireadmodule.MultiReaderActivity;
+import com.example.coco.coconfctag.readermodule.ReaderActivity;
+
 
 /**
  * Created by user on 8/8/16.
@@ -31,69 +34,48 @@ public class Tab1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.tab1, container, false);
-
         mTextView = (TextView) view.findViewById(R.id.textView_explanation);
-
         mButton =(Button) view.findViewById(R.id.btnReader);
-
         mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
                 ///startActivity(new Intent(getActivity(), NfcReader.class));
-
-                Intent intent = new Intent(getActivity(), NfcReader.class);
-
+                Intent intent = new Intent(getActivity(), ReaderActivity.class);
                 startActivity(intent);
-
             }
         });
-
-
         mButtonWrite =(Button) view.findViewById(R.id.btnWriter);
-
         mButtonWrite.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
                 ///startActivity(new Intent(getActivity(), NfcReader.class));
-
                 Intent intent = new Intent(getActivity(), NfcWriter.class);
-
                 startActivity(intent);
-
             }
         });
-
         mButtonMultiReader =(Button) view.findViewById(R.id.btnMultiTagReader);
-
         mButtonMultiReader.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
                 ///startActivity(new Intent(getActivity(), NfcReader.class));
-
-                Intent intent = new Intent(getActivity(), NfcMultiReader.class);
-
+                Intent intent = new Intent(getActivity(), MultiReaderActivity.class);
                 startActivity(intent);
 
             }
         });
 
+
         //mTextView = (TextView) getView(R.id.textView_explanation);
-
         /*mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
-
         if (mNfcAdapter == null) {
             // Stop here, we definitely need NFC
             Toast.makeText(getActivity(), "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
             getActivity().finish();
             //return;
-
-        }
+  }
 
         if (!mNfcAdapter.isEnabled()) {
             mTextView.setText("NFC is disabled.");

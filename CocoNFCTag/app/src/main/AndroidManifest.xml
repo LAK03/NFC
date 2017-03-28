@@ -3,33 +3,53 @@
     package="com.example.coco.coconfctag">
 
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         >
-        <activity android:name=".Login">
+        <activity
+            android:name=".loginmodule.LoginActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".NfcWriter"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".multireadmodule.MultiReaderActivity"
+            android:screenOrientation="portrait">
+
+
+        </activity>
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"/>
+
+
         <activity
-            android:name=".NfcReader"
-            android:label="@string/title_activity_nfc_reader"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".barcode.BarcodeCaptureActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".readermodule.ReaderActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
@@ -44,10 +64,6 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity android:name=".NfcWriter" />
-        <activity android:name=".NfcMultiReader" />
-        <activity android:name=".MainActivity"/>
-
     </application>
 
 </manifest>

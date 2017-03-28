@@ -11,6 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.coco.coconfctag.NfcReader"
-    tools:showIn="@layout/activity_nfc_reader">
+    tools:showIn="@layout/fragment_nfc_read">
 
 </RelativeLayout>

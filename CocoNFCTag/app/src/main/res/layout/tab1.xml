@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#ffffff"
-
-    android:layout_height="match_parent">
-
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:layout_margin="37dp"
         android:gravity="center"
         android:text="@string/explanation"
-        android:id="@+id/textView_explanation"
-        android:layout_marginTop="37dp"
-        android:textSize="20dp"
-        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/choice_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp10"
+        android:padding="4dp"
+
+        >
+
+        <Button
+            android:id="@+id/btnWriter"
+            android:layout_width="@dimen/dp80"
+            android:layout_height="@dimen/dp80"
+            android:layout_margin="@dimen/dp20"
+            android:background="@drawable/write"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/btnReader"
+            android:layout_width="@dimen/dp80"
+            android:layout_height="@dimen/dp80"
+            android:layout_margin="@dimen/dp20"
+            android:background="@drawable/read"
+            android:gravity="center"
+
+            android:padding="@dimen/dp15" />
+    </LinearLayout>
 
     <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/write"
-        android:id="@+id/btnWriter"
-        android:layout_above="@+id/btnMultiTagReader"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="44dp"
-        android:layout_marginEnd="44dp" />
-
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/read"
-        android:id="@+id/btnReader"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="81dp"
-        android:layout_below="@+id/textView_explanation"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/multiread"
         android:id="@+id/btnMultiTagReader"
-        android:layout_marginTop="74dp"
-        android:layout_below="@+id/btnReader"
-        android:layout_centerHorizontal="true" />
+        android:layout_width="@dimen/dp80"
+        android:layout_height="@dimen/dp80"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp20"
+        android:background="@drawable/multiread"
+        android:gravity="left"
+        android:padding="@dimen/dp15" />
 
 
-</RelativeLayout>
+</LinearLayout>
 
 

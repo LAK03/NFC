@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/dp32">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/colorPrimary"
+        android:text="Settings"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/dp15"/>
+    <EditText
+        android:id="@+id/appname_etxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp32"
+        android:layout_marginRight="@dimen/dp32"
+        android:text="EASY SHOPPING CART"
+        android:background="@drawable/ic_edit_txt_bg"
+        android:hint="App Name"
+        android:padding="@dimen/dp10" />
+    <EditText
+        android:id="@+id/configurl_etxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp32"
+        android:text="http://192.168.0.1/service1.svc"
+        android:layout_marginRight="@dimen/dp32"
+        android:background="@drawable/ic_edit_txt_bg"
+        android:hint="Config URL"
+        android:padding="@dimen/dp10" />
+    <EditText
+        android:id="@+id/city_etxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp32"
+        android:layout_marginRight="@dimen/dp32"
+        android:background="@drawable/ic_edit_txt_bg"
+        android:hint="City"
+        android:text="Fremont"
+        android:padding="@dimen/dp10" />
+    <EditText
+        android:id="@+id/state_etxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp32"
+        android:layout_marginRight="@dimen/dp32"
+        android:text="California"
+        android:background="@drawable/ic_edit_txt_bg"
+        android:hint="State"
+        android:padding="@dimen/dp10" />
+
+    <TextView
+        android:id="@+id/save_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/rounded_corner"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp20"
+        android:paddingTop="@dimen/dp10"
+        android:text="Save"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/white" />
+</LinearLayout>

@@ -3,4 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dp20">20dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp80">80dp</dimen>
+    <dimen name="dp30">30dp</dimen>
+    <dimen name="dp15">15dp</dimen>
+    <dimen name="sp8">8sp</dimen>
+    <dimen name="sp12">12sp</dimen>
+    <dimen name="dp2">2dp</dimen>
+    <dimen name="dp5">5dp</dimen>
+    <dimen name="dp28">28dp</dimen>
+    <dimen name="dp32">32dp</dimen>
 </resources>

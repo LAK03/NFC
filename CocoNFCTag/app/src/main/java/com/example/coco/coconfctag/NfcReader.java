@@ -25,76 +25,54 @@ import java.util.Arrays;
 
 public class NfcReader extends AppCompatActivity {
 
-
     public static final String TAG = "NFCReader Demo";
-
     public static final String MIME_TEXT_PLAIN = "text/plain";
-
     private TextView mTextView;
-
     private Button btnBack;
-
     private NfcAdapter mNfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc_reader);
+        setContentView(R.layout.fragment_nfc_read);
         mTextView = (TextView) findViewById(R.id.textView_explanation);
-
-        btnBack =(Button) findViewById(R.id.btnBack);
-
+        btnBack = (Button) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
                 finish();
-
             }
         });
-
-
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
         if (mNfcAdapter == null) {
             // Stop here, we definitely need NFC
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
             finish();
             return;
-
         }
-
         if (!mNfcAdapter.isEnabled()) {
             mTextView.setText("NFC is disabled.");
         } else {
             mTextView.setText(R.string.explanation);
         }
-
         handleIntent(getIntent());
     }
-
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-
             String type = intent.getType();
             if (MIME_TEXT_PLAIN.equals(type)) {
-
                 Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 new NdefReaderTask().execute(tag);
-
             } else {
                 Log.d(TAG, "Wrong mime type: " + type);
             }
         } else if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-
             // In case we would still use the Tech Discovered Intent
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             String[] techList = tag.getTechList();
             String searchedTech = Ndef.class.getName();
-
             for (String tech : techList) {
                 if (searchedTech.equals(tech)) {
                     new NdefReaderTask().execute(tag);
@@ -107,7 +85,6 @@ public class NfcReader extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         /**
          * It's important, that the activity is in the foreground (resumed). Otherwise
          * an IllegalStateException is thrown.
@@ -121,7 +98,6 @@ public class NfcReader extends AppCompatActivity {
          * Call this before onPause, otherwise an IllegalArgumentException is thrown as well.
          */
         stopForegroundDispatch(this, mNfcAdapter);
-
         super.onPause();
     }
 
@@ -139,18 +115,15 @@ public class NfcReader extends AppCompatActivity {
 
     /**
      * @param activity The corresponding {@link Activity} requesting the foreground dispatch.
-     * @param adapter The {@link NfcAdapter} used for the foreground dispatch.
+     * @param adapter  The {@link NfcAdapter} used for the foreground dispatch.
      */
     public static void setupForegroundDispatch(final Activity activity, NfcAdapter adapter) {
 
         final Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
         final PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
-
         IntentFilter[] filters = new IntentFilter[1];
         String[][] techList = new String[][]{};
-
         // Notice that this is the same filter as in our manifest.
         filters[0] = new IntentFilter();
         filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
@@ -160,13 +133,12 @@ public class NfcReader extends AppCompatActivity {
         } catch (IntentFilter.MalformedMimeTypeException e) {
             throw new RuntimeException("Check your mime type.");
         }
-
         adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
     }
 
     /**
      * @param activity The corresponding {@link Activity} requesting to stop the foreground dispatch.
-     * @param adapter The {@link NfcAdapter} used for the foreground dispatch.
+     * @param adapter  The {@link NfcAdapter} used for the foreground dispatch.
      */
     public static void stopForegroundDispatch(final Activity activity, NfcAdapter adapter) {
         adapter.disableForegroundDispatch(activity);
@@ -176,7 +148,6 @@ public class NfcReader extends AppCompatActivity {
      * Background task for reading the data. Do not block the UI thread while reading.
      *
      * @author munik
-     *
      */
     private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
 
@@ -191,21 +162,20 @@ public class NfcReader extends AppCompatActivity {
             }
 
             NdefMessage ndefMessage = ndef.getCachedNdefMessage();
-
-            NdefRecord[] records = ndefMessage.getRecords();
-            for (NdefRecord ndefRecord : records) {
-                if (ndefRecord.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(ndefRecord.getType(), NdefRecord.RTD_TEXT)) {
-                    try {
-                        return readText(ndefRecord);
-                    } catch (UnsupportedEncodingException e) {
-                        Log.e(TAG, "Unsupported Encoding", e);
+            if (ndefMessage != null) {
+                NdefRecord[] records = ndefMessage.getRecords();
+                for (NdefRecord ndefRecord : records) {
+                    if (ndefRecord.getTnf() == NdefRecord.TNF_WELL_KNOWN && Arrays.equals(ndefRecord.getType(), NdefRecord.RTD_TEXT)) {
+                        try {
+                            return readText(ndefRecord);
+                        } catch (UnsupportedEncodingException e) {
+                            Log.e(TAG, "Unsupported Encoding", e);
+                        }
                     }
                 }
             }
-
             return null;
         }
-
 
         private String readText(NdefRecord record) throws UnsupportedEncodingException {
         /*

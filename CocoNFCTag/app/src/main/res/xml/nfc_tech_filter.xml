@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <tech-list>
         <tech>android.nfc.tech.Ndef</tech>
-        <!-- class name -->
+        <!-- class productName -->
     </tech-list>
 </resources>
 
