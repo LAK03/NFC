@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1));
         mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1));
     }
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(this.getSupportFragmentManager());
         Tab1 afrag = new Tab1();
