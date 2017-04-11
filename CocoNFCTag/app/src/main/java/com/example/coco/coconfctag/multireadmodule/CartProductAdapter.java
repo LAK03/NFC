@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.coco.coconfctag.R;
+import com.example.coco.coconfctag.listeners.QuantityListener;
 import com.example.coco.coconfctag.readermodule.ProductItem;
 
 import java.util.ArrayList;
@@ -25,15 +26,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
 
     public class MyViewHolders extends RecyclerView.ViewHolder {
-        public TextView productName, productPrice, totalPrice, count;
+        public TextView productName, productPrices, totalPrices, count;
         public ImageView plusBtn, minusBtn;
 
 
         public MyViewHolders(View view) {
             super(view);
             productName = (TextView) view.findViewById(R.id.name_txt);
-            productPrice = (TextView) view.findViewById(R.id.price_txt);
-            totalPrice = (TextView) view.findViewById(R.id.total_txt);
+            //productPrice = (TextView) view.findViewById(R.id.price_txt);
+            //totalPrice = (TextView) view.findViewById(R.id.total_txt);
             count = (TextView) view.findViewById(R.id.count_txt);
             plusBtn = (ImageView) view.findViewById(R.id.plus_btn);
             minusBtn = (ImageView) view.findViewById(R.id.minus_btn);
@@ -58,17 +59,16 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolders holder, final int position) {
-        holder.productName.setText("" + productList.get(position).getProductId() + "-" + productList.get(position).getProductName());
+        holder.productName.setText(productList.get(position).getProductName());
         holder.count.setText("" + productList.get(position).getCount());
-        holder.productPrice.setText("$ " + productList.get(position).getProductPrice());
-        holder.totalPrice.setText("Total " + (productList.get(position).getCount() * productList.get(position).getProductPrice()));
+//        holder.productPrice.setText("$ " + productList.get(position).getProductPrice());
+//        holder.totalPrice.setText("Total " + (productList.get(position).getCount() * productList.get(position).getProductPrice()));
         holder.plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 quantityListener.onQuantityChange(productList.get(position).getProductId(), 1);
             }
         });
-
         holder.minusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

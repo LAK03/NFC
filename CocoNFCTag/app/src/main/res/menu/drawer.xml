@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_home"
+            android:checked="false"
+
+            android:title="Home" />
+    </group>
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_ordered"
+            android:checked="false"
+
+            android:title="Ordered List" />
+    </group>
+    <group
+        android:id="@+id/grp3"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_favourite"
+            android:checked="false"
+
+            android:title="Favourite List" />
+    </group>
+    <group
+        android:id="@+id/grp6"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_edit"
+            android:checked="false"
+
+            android:title="Edit Profile" />
+    </group>
+    <group
+        android:id="@+id/grp7"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_settings"
+            android:checked="false"
+
+            android:title="Settings" />
+    </group>
+</menu>

@@ -79,6 +79,7 @@ public class BarReadFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("LAG", "dddddddddddd");
         if (requestCode == BARCODE_READER_REQUEST_CODE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
@@ -89,14 +90,16 @@ public class BarReadFragment extends Fragment implements View.OnClickListener {
                         obj = new JSONObject(barcode.displayValue);
                         Log.e(LOG_TAG, "d");
                     } catch (JSONException e) {
+                        Log.e(LOG_TAG, "d");
                         e.printStackTrace();
                     }
                     doJSONParsing(obj);
 
                 } else
                     Log.e(LOG_TAG, String.format(getString(R.string.barcode_error_format), CommonStatusCodes.getStatusCodeString(resultCode)));
-            } else super.onActivityResult(requestCode, resultCode, data);
+            }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void doJSONParsing(JSONObject obj) {

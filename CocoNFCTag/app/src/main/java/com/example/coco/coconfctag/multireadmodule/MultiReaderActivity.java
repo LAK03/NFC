@@ -31,13 +31,10 @@ import android.widget.Toast;
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.barcode.BarcodeCaptureActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.readermodule.NFCReadFragment;
-import com.example.coco.coconfctag.readermodule.ProductAdapter;
+import com.example.coco.coconfctag.listeners.QuantityListener;
 import com.example.coco.coconfctag.readermodule.ProductItem;
-import com.example.coco.coconfctag.readermodule.ReaderActivity;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.text.Text;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,8 +42,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MultiReaderActivity extends AppCompatActivity implements View.OnClickListener, QuantityListener {
 

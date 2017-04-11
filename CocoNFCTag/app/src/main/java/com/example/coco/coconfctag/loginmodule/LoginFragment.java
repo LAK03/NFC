@@ -1,6 +1,7 @@
 package com.example.coco.coconfctag.loginmodule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,8 @@ import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.activity.MainActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by cocoadmin on 3/16/2017.
  */
@@ -30,6 +33,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private DatabaseHandler mDB;
     private TextView mWarnTxt;
     private ImageView mSettingsImg;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -83,6 +87,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             mWarnTxt.setVisibility(View.VISIBLE);
             mWarnTxt.setText("Incorrect password");
         } else {
+           editor = getContext().getSharedPreferences("cocosoft", MODE_PRIVATE).edit();
+            editor.putBoolean("isloggedin", true);
+            editor.commit();
             Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(getContext(), MainActivity.class);
             startActivity(i);
