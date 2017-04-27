@@ -7,8 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.coco.coconfctag.activity.MainActivity">
 
-
-
     <include layout="@layout/content_main" />
 
 
