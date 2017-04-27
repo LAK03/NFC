@@ -1,33 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/coordinatorLayout"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp15">
+    android:fitsSystemWindows="true">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rview"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/add_cart_txt"
-        android:layout_alignParentTop="true"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp2">
 
-    <TextView
-        android:id="@+id/add_cart_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
 
-        android:background="@drawable/rounded_corner"
-        android:gravity="center"
-        android:paddingBottom="@dimen/dp10"
-        android:paddingLeft="@dimen/dp20"
-        android:paddingRight="@dimen/dp20"
-        android:paddingTop="@dimen/dp10"
-        android:text="Add Cart"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-</RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/add_cart_lay"
+            android:layout_marginBottom="@dimen/dp5"
+            android:layout_alignParentTop="true"></android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/add_cart_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/add_wish_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/dp15"
+                android:background="@drawable/rounded_corner"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
+                android:paddingTop="@dimen/dp10"
+                android:visibility="gone"
+                android:text="Add WishList"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/add_cart_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:textColor="#ffffff"
+                android:layout_margin="@dimen/dp10"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold"
+                android:background="@drawable/custombutton"
+                android:text="Add To Cart" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

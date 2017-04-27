@@ -4,12 +4,15 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,10 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
     private TextView mSignupTxt, mWarnTxt, mDOBTxt;
     private DatabaseHandler mDB;
 
+    private TextView mCountTxtView;
+    private TextView mTitleTxtView;
+    private ImageView mCartImg;
+    private RelativeLayout mSearchLayout;
 
     @Nullable
     @Override
@@ -44,6 +51,11 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
         mDOBTxt.setOnClickListener(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTitleTxtView.setText("SignUp");
+    }
     private void init(View v) {
         mUserNameEdtTxt = (EditText) v.findViewById(R.id.username_etxt);
         mPwdEdtTxt = (EditText) v.findViewById(R.id.pwd_etxt);
@@ -52,6 +64,14 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
         mWarnTxt = (TextView) v.findViewById(R.id.warning_txt);
         mDOBTxt = (TextView) v.findViewById(R.id.dob_txt);
         mDB = new DatabaseHandler(getContext());
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        mCountTxtView = (TextView) toolbar.findViewById(R.id.total_count);
+        mTitleTxtView = (TextView) toolbar.findViewById(R.id.title_txt);
+        mCartImg = (ImageView) toolbar.findViewById(R.id.cart_img);
+        mCountTxtView.setVisibility(View.GONE);
+        mCartImg.setVisibility(View.GONE);
+        mSearchLayout = (RelativeLayout) getActivity().findViewById(R.id.search_layout);
+        mSearchLayout.setVisibility(View.GONE);
 
     }
 

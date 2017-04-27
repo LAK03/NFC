@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
         mTabLayout.setupWithViewPager(mViewPager);
         mDB = new DatabaseHandler(this);
-        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1));
-        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1));
-        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1));
-        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1));
-        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1));
+        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1,0));
+        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1,0));
+        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1,0));
+        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1,0));
+        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1,0));
     }
 
     private void setupViewPager(ViewPager viewPager) {

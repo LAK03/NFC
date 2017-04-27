@@ -5,48 +5,34 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOError;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 import java.util.ArrayList;
 
 
 
 public class NfcWriter extends AppCompatActivity {
 
-
     private NFCManager nfcMger;
     public static ArrayList<String> productDetails = new ArrayList<String>();
-
     private View v;
     private NdefMessage message = null;
     private ProgressDialog dialog;
-    Tag currentTag;
-
+    private Tag currentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +77,6 @@ public class NfcWriter extends AppCompatActivity {
                         break;
                 }
                 if (message != null) {
-
                     dialog = new ProgressDialog(NfcWriter.this);
                     dialog.setMessage("Tag NFC Tag please");
                     dialog.show();;
@@ -120,9 +105,6 @@ public class NfcWriter extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
     @Override
     protected void onResume() {
@@ -162,11 +144,9 @@ public class NfcWriter extends AppCompatActivity {
             nfcMger.writeTag(currentTag, message);
             dialog.dismiss();
             Snackbar.make(v, "Tag written", Snackbar.LENGTH_LONG).show();
-
         }
         else {
             // Handle intent
-
         }
     }
 }

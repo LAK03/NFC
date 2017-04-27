@@ -7,5 +7,5 @@ import org.json.JSONObject;
  */
 
 public interface ScanResultListener {
-    void onScanResult(JSONObject obj);
+    void onScanResult(JSONObject obj,int scantype);
 }

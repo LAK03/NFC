@@ -1,0 +1,55 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.coco.coconfctag.loginmodule.IndividualItemFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+       <ImageView
+           android:id="@+id/product_img"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/ic_fog"/>
+       <TextView
+           android:id="@+id/productname_txt"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Fog Perfume"
+           android:textColor="@color/black"
+           android:textAppearance="?android:textAppearanceMedium"
+           android:padding="@dimen/dp10"/>
+       <TextView
+           android:id="@+id/productprice_txt"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="20 $"
+           android:textColor="@color/grey_15"
+           android:textAppearance="?android:textAppearanceMedium"
+           android:paddingLeft="@dimen/dp10"/>
+       <TextView
+           android:id="@+id/productdesc_txt"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Natural Honey Facial Cleansing Bar – Enriched with natural herbal extracts. Remove dirt and impurities from your sensitive skin with our all-natural Cleansing Bar."
+           android:textAppearance="?android:textAppearanceSmall"
+           android:layout_marginBottom="@dimen/dp10"
+           android:paddingLeft="@dimen/dp10"/>
+       <Button
+           android:id="@+id/add_wish_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingLeft="40dp"
+           android:paddingRight="40dp"
+           android:textColor="#ffffff"
+           android:layout_margin="@dimen/dp10"
+           android:textAppearance="?android:textAppearanceMedium"
+           android:textStyle="bold"
+           android:background="@drawable/custombutton"
+           android:text="Add To Wishlist" />
+   </LinearLayout>
+
+</FrameLayout>

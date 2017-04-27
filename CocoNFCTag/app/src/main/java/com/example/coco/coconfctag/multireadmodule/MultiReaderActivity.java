@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.barcode.BarcodeCaptureActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
+import com.example.coco.coconfctag.listeners.IndividualItemListener;
 import com.example.coco.coconfctag.listeners.QuantityListener;
 import com.example.coco.coconfctag.readermodule.ProductItem;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -43,7 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MultiReaderActivity extends AppCompatActivity implements View.OnClickListener, QuantityListener {
+public class MultiReaderActivity extends AppCompatActivity implements View.OnClickListener, QuantityListener, IndividualItemListener {
 
     private RecyclerView mProductRView;
     private LinearLayoutManager mLManager;
@@ -90,7 +91,7 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
         mMakePayment = (TextView) findViewById(R.id.make_payment);
         mLManager = new LinearLayoutManager(this);
         mProductRView.setLayoutManager(mLManager);
-        mProductAdapter = new CartProductAdapter(this, mProductArray, this);
+        mProductAdapter = new CartProductAdapter(this, mProductArray, this,this);
         mProductRView.setAdapter(mProductAdapter);
         mDropdown = (Spinner) findViewById(R.id.spinner);
         mRLayout = (RelativeLayout) findViewById(R.id.rlayout);
@@ -184,9 +185,9 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
                     }
                 }
                 if (item == null)
-                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1));
+                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0));
             } else {
-                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1));
+                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0));
             }
             mProductAdapter.notifyDataSetChanged();
         } else {
@@ -312,6 +313,11 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
      */
     public static void stopForegroundDispatch(final Activity activity, NfcAdapter adapter) {
         adapter.disableForegroundDispatch(activity);
+    }
+
+    @Override
+    public void OnCardClick(String productid) {
+
     }
 
     /**

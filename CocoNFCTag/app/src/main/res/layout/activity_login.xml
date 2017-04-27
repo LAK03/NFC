@@ -23,9 +23,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
+                android:gravity="end"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+                <TextView
+                    android:id="@+id/title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/white"
+                    android:text="Cocosoft NFC"/>
 
                 <RelativeLayout
                     android:id="@+id/rlayout"
@@ -36,6 +44,7 @@
                     android:gravity="end">
 
                     <ImageView
+                        android:id="@+id/cart_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -52,9 +61,8 @@
                         android:background="@drawable/ic_circle"
                         android:gravity="center"
                         android:text="0"
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/white"
-                        />
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
@@ -64,8 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/toolbar"
-                android:background="@color/colorPrimary"
-                >
+                android:background="@color/colorPrimary">
 
                 <android.support.v7.widget.SearchView
                     android:id="@+id/search_view"
@@ -81,9 +88,9 @@
                     android:id="@+id/cam_mic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp5"
-                    android:layout_centerInParent="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/dp5"
                     android:orientation="horizontal">
 
                     <ImageView

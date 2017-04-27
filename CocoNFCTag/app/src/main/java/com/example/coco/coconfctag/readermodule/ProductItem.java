@@ -12,12 +12,14 @@ public class ProductItem implements Parcelable {
     private String productName="";
     private int productPrice=0;
     private int count=0;
+    private int scantype=0;
 
-    public ProductItem(String productId, String productName, int productPrice, int count) {
+    public ProductItem(String productId, String productName, int productPrice, int count, int scantype) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.count = count;
+        this.scantype = scantype;
     }
 
     protected ProductItem(Parcel in) {
@@ -25,6 +27,7 @@ public class ProductItem implements Parcelable {
         productName = in.readString();
         productPrice = in.readInt();
         count = in.readInt();
+        scantype=in.readInt();
     }
 
     public static final Creator<ProductItem> CREATOR = new Creator<ProductItem>() {
@@ -74,6 +77,14 @@ public class ProductItem implements Parcelable {
         this.productPrice = productPrice;
     }
 
+    public int getScantype() {
+        return scantype;
+    }
+
+    public void setScantype(int scantype) {
+        this.scantype = scantype;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -85,5 +96,6 @@ public class ProductItem implements Parcelable {
         dest.writeString(productName);
         dest.writeInt(productPrice);
         dest.writeInt(count);
+        dest.writeInt(scantype);
     }
 }

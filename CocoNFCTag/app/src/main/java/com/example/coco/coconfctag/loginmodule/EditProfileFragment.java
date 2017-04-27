@@ -1,5 +1,4 @@
 package com.example.coco.coconfctag.loginmodule;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,10 +13,10 @@ import android.widget.TextView;
 import com.example.coco.coconfctag.R;
 
 /**
- * Created by cocoadmin on 3/20/2017.
+ * Created by cocoadmin on 4/13/2017.
  */
 
-public class SettingsFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     private TextView mCountTxtView;
     private TextView mTitleTxtView;
@@ -26,26 +25,25 @@ public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_settings, container, false);
-        init(v);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_editprofile, container, false);
+        init(view);
         setListeners();
-        return v;
+        return view;
     }
 
     private void setListeners() {
-
     }
 
-    private void init(View v) {
+    private void init(View view) {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mCountTxtView = (TextView) toolbar.findViewById(R.id.total_count);
         mTitleTxtView = (TextView) toolbar.findViewById(R.id.title_txt);
         mCartImg = (ImageView) toolbar.findViewById(R.id.cart_img);
-         mSearchLayout = (RelativeLayout) getActivity().findViewById(R.id.search_layout);
+        mSearchLayout = (RelativeLayout) getActivity().findViewById(R.id.search_layout);
         mCountTxtView.setVisibility(View.GONE);
         mCartImg.setVisibility(View.GONE);
         mSearchLayout.setVisibility(View.GONE);
-        mTitleTxtView.setText("Settings");
+        mTitleTxtView.setText("Edit Profile");
     }
 }
