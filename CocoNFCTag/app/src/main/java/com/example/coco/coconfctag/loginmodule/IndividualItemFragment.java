@@ -78,10 +78,17 @@ public class IndividualItemFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_wish_btn:
+                boolean isloggedin = prefs.getBoolean("isloggedin", false);
                 String username = prefs.getString("username", "");
-                if (!(mDb.wishlistAlreadyAdded(username, item.getProductId()))) {
-                    mDb.addToWishlist(item.getProductId(), username);
-                    Toast.makeText(getContext(),"Added to Wishlist",Toast.LENGTH_SHORT).show();
+                if(isloggedin) {
+                    if (!(mDb.wishlistAlreadyAdded(username, item.getProductId()))) {
+                        mDb.addToWishlist(item.getProductId(), username);
+                        Toast.makeText(getContext(), "Added to Wishlist", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Please login to continue", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

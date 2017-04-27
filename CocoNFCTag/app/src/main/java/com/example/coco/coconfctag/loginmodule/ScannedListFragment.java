@@ -86,8 +86,8 @@ public class ScannedListFragment extends Fragment implements View.OnClickListene
         mTitleTxtView.setText("Product List");
         mCountTxtView.setVisibility(View.VISIBLE);
         mCartImg.setVisibility(View.VISIBLE);
-
         mSearchLayout.setVisibility(View.VISIBLE);
+        changeCount();
     }
 
     private void setListeners() {
@@ -208,7 +208,7 @@ public class ScannedListFragment extends Fragment implements View.OnClickListene
 
         mQtyListener.onQuantityChange(id, quantity);
         mProductAdapter.notifyDataSetChanged();
-
+        changeCount();
     }
 
     @Override

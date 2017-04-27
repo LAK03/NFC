@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.MenuPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,17 +18,11 @@ import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.QuantityListener;
 import com.example.coco.coconfctag.listeners.WishlistCheckListener;
 import com.example.coco.coconfctag.listeners.WishlistListener;
-import com.example.coco.coconfctag.multireadmodule.CartProductAdapter;
 import com.example.coco.coconfctag.readermodule.ProductItem;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -111,7 +104,7 @@ public class WishListFragment extends Fragment implements View.OnClickListener, 
                 if (isloggedin) {
                     Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
                 } else {
-                    openFrag(1);
+                    Toast.makeText(getContext(), "Please Login to continue", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
