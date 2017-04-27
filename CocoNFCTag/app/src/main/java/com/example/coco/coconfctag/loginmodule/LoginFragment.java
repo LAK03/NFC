@@ -1,22 +1,34 @@
 package com.example.coco.coconfctag.loginmodule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.activity.MainActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
+import com.example.coco.coconfctag.listeners.QuantityListener;
+import com.example.coco.coconfctag.multireadmodule.CartProductAdapter;
+import com.example.coco.coconfctag.readermodule.ProductItem;
+
+import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by cocoadmin on 3/16/2017.
@@ -30,6 +42,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private DatabaseHandler mDB;
     private TextView mWarnTxt;
     private ImageView mSettingsImg;
+    private SharedPreferences.Editor editor;
+
+
+
+    private TextView mCountTxtView;
+    private TextView mTitleTxtView;
+    private ImageView mCartImg;
+    private RelativeLayout mSearchLayout;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTitleTxtView.setText("Login");
+    }
 
     @Nullable
     @Override
@@ -54,6 +81,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mDB = new DatabaseHandler(getContext());
         mWarnTxt = (TextView) v.findViewById(R.id.warning_txt);
         mSettingsImg = (ImageView) v.findViewById(R.id.settings_img);
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        mCountTxtView = (TextView) toolbar.findViewById(R.id.total_count);
+        mTitleTxtView = (TextView) toolbar.findViewById(R.id.title_txt);
+        mCartImg = (ImageView) toolbar.findViewById(R.id.cart_img);
+        mCountTxtView.setVisibility(View.GONE);
+        mCartImg.setVisibility(View.GONE);
+        mSearchLayout = (RelativeLayout) getActivity().findViewById(R.id.search_layout);
+        mSearchLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -78,14 +113,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             mWarnTxt.setText("Please enter a valid Username");
         } else if (item == null) {
             mWarnTxt.setVisibility(View.VISIBLE);
-            mWarnTxt.setText("Incorrect username ");
+            mWarnTxt.setText("Incorrect username");
         } else if (!(item.getPassword().equals(mPwdEdtTxt.getText().toString().trim()))) {
             mWarnTxt.setVisibility(View.VISIBLE);
             mWarnTxt.setText("Incorrect password");
         } else {
+            editor = getContext().getSharedPreferences("cocosoft", MODE_PRIVATE).edit();
+            editor.putBoolean("isloggedin", true);
+            editor.putString("username", mUserNameEdtTxt.getText().toString().trim());
+            editor.commit();
             Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(getContext(), MainActivity.class);
-            startActivity(i);
+         /*   Intent i = new Intent(getContext(), MainActivity.class);
+            startActivity(i);*/
+        getActivity().getSupportFragmentManager().popBackStack();
         }
     }
 
@@ -99,6 +139,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case 1:
                 firstFragment = new SignupFragment();
                 break;
+
         }
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

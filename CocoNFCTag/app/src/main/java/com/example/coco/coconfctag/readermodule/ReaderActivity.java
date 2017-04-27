@@ -28,7 +28,7 @@ import java.util.Arrays;
 /**
  * Created by cocoadmin on 3/19/2017.
  */
-public class ReaderActivity extends AppCompatActivity implements Listener {
+public class ReaderActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -235,13 +235,5 @@ public class ReaderActivity extends AppCompatActivity implements Listener {
 
     }
 
-    @Override
-    public void onDialogDisplayed() {
 
-    }
-
-    @Override
-    public void onDialogDismissed() {
-
-    }
 }

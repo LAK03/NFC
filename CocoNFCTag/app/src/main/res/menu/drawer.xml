@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_home"
+            android:checked="false"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+    </group>
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_ordered"
+            android:checked="false"
+            android:icon="@drawable/ic_list"
+            android:title="Ordered List" />
+    </group>
+    <group
+        android:id="@+id/grp3"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_favourite"
+            android:checked="false"
+            android:icon="@drawable/ic_list_fav"
+            android:title="WishList" />
+    </group>
+    <group
+        android:id="@+id/grp6"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_edit"
+            android:checked="false"
+            android:icon="@drawable/ic_edit_profile"
+            android:title="Edit Profile" />
+    </group>
+    <group
+        android:id="@+id/grp7"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_settings"
+            android:checked="false"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+    </group>
+    <group
+        android:id="@+id/grp8"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_nfcwriter"
+            android:checked="false"
+            android:icon="@drawable/ic_nfc"
+            android:title="NFC Tag Writer" />
+    </group>
+    <group
+        android:id="@+id/grp9"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_logout"
+            android:checked="false"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+    </group>
+</menu>
