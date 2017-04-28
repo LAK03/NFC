@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.coco.coconfctag.loginmodule.UserItem;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

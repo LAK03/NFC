@@ -1,14 +1,11 @@
 package com.example.coco.coconfctag.loginmodule;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
-import com.example.coco.coconfctag.activity.MainActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.QuantityListener;
-import com.example.coco.coconfctag.multireadmodule.CartProductAdapter;
-import com.example.coco.coconfctag.readermodule.ProductItem;
-
-import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 

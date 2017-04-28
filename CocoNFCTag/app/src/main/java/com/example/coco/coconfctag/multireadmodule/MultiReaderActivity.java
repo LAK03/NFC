@@ -33,7 +33,8 @@ import com.example.coco.coconfctag.barcode.BarcodeCaptureActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
 import com.example.coco.coconfctag.listeners.IndividualItemListener;
 import com.example.coco.coconfctag.listeners.QuantityListener;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ScanListAdapter;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -49,7 +50,7 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
     private RecyclerView mProductRView;
     private LinearLayoutManager mLManager;
     private ArrayList<ProductItem> mProductArray = new ArrayList<>();
-    private CartProductAdapter mProductAdapter;
+    private ScanListAdapter mScanListAdapter;
     private Spinner mDropdown;
     private String[] items;
     private String TAG = "MultiReaderActivity";
@@ -91,8 +92,8 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
         mMakePayment = (TextView) findViewById(R.id.make_payment);
         mLManager = new LinearLayoutManager(this);
         mProductRView.setLayoutManager(mLManager);
-        mProductAdapter = new CartProductAdapter(this, mProductArray, this,this);
-        mProductRView.setAdapter(mProductAdapter);
+        mScanListAdapter = new ScanListAdapter(this, mProductArray, this,this);
+        mProductRView.setAdapter(mScanListAdapter);
         mDropdown = (Spinner) findViewById(R.id.spinner);
         mRLayout = (RelativeLayout) findViewById(R.id.rlayout);
         mDB = new DatabaseHandler(this);
@@ -185,11 +186,11 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
                     }
                 }
                 if (item == null)
-                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0));
+                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0,false));
             } else {
-                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0));
+                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1,0,false));
             }
-            mProductAdapter.notifyDataSetChanged();
+            mScanListAdapter.notifyDataSetChanged();
         } else {
             Toast.makeText(this, "Item not found on Database", Toast.LENGTH_SHORT).show();
         }
@@ -219,7 +220,7 @@ public class MultiReaderActivity extends AppCompatActivity implements View.OnCli
             if (mProductArray.get(i).getProductId().equals(id)) {
                 int count = mProductArray.get(i).getCount();
                 mProductArray.get(i).setCount(count + quantity);
-                mProductAdapter.notifyDataSetChanged();
+                mScanListAdapter.notifyDataSetChanged();
             }
         }
         changeCount();

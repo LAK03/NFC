@@ -13,7 +13,6 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,25 +31,19 @@ import android.widget.Toast;
 
 import com.example.coco.coconfctag.NfcWriter;
 import com.example.coco.coconfctag.R;
+import com.example.coco.coconfctag.cartmodule.CartFragment;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.LockNavigationListener;
-import com.example.coco.coconfctag.listeners.QuantityListener;
-import com.example.coco.coconfctag.listeners.ScanResultListener;
-import com.example.coco.coconfctag.readermodule.ProductItem;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
+import com.example.coco.coconfctag.wishlistmodule.WishListFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
-public class LoginActivity extends AppCompatActivity implements LockNavigationListener, View.OnClickListener, QuantityListener, ScanResultListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SearchView mSearchView;
     private NavigationView mNavigationView;
@@ -59,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private ImageView mCartImg;
     private DatabaseHandler mDB;
-    private ArrayList<ProductItem> mProductArray = new ArrayList<>();
+
     private NfcAdapter mNfcAdapter;
     private Context context;
     public static final String TAG = "NFCReaderDemo";
@@ -67,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     private Fragment firstFragment = null;
     private SharedPreferences appSharedPrefs;
     private SharedPreferences.Editor prefsEditor;
-    private Gson gson;
+//    private Gson gson;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
 
     private void init() {
         context = this;
-        gson = new Gson();
+//        gson = new Gson();
         mSearchView = (SearchView) findViewById(R.id.search_view);
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,19 +97,19 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         initNavigationDrawer();
         mDB = new DatabaseHandler(this);
-        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1, 0));
-        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1, 0));
-        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1, 0));
-        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1, 0));
-        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1, 0));
+        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1, 0,false));
+        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1, 0,false));
+        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1, 0,false));
+        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1, 0,false));
+        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1, 0,false));
         appSharedPrefs = getSharedPreferences("cocosoft", MODE_PRIVATE);
         prefsEditor = appSharedPrefs.edit();
-        String tempdata = appSharedPrefs.getString("tempdata", null);
+      /*  String tempdata = appSharedPrefs.getString("tempdata", null);
 
-        Type type = new TypeToken<List<ProductItem>>() {}.getType();
-        ArrayList<ProductItem> arr=gson.fromJson(tempdata, type);
+        Type type = new TypeToken<List<ProductItem>>() {}.getType();*/
+      /*  ArrayList<ProductItem> arr=gson.fromJson(tempdata, type);
         if(arr!=null)
-        mProductArray = gson.fromJson(tempdata, type);
+        mProductArray = gson.fromJson(tempdata, type);*/
     }
 
     private void initNavigationDrawer() {
@@ -140,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
                         return true;
                     // For rest of the options we just show a toast on click
                     case R.id.menu_ordered:
-                        openFrag(2);
+//                        openFrag(2);
                         return true;
                     case R.id.menu_favourite:
                         openFrag(5);
@@ -207,20 +200,12 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
         switch (i) {
             case 0:
                 firstFragment = new HomeFragment();
-                ((HomeFragment) firstFragment).setListener(this, this, this);
-                Bundle bundles = new Bundle();
-                bundles.putParcelableArrayList("productarray", mProductArray);
-                firstFragment.setArguments(bundles);
                 break;
             case 1:
                 firstFragment = new LoginFragment();
                 break;
             case 2:
                 firstFragment = new CartFragment();
-                ((CartFragment) firstFragment).setListener(this);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("productarray", mProductArray);
-                firstFragment.setArguments(bundle);
                 break;
             case 3:
                 firstFragment = new EditProfileFragment();
@@ -255,12 +240,12 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
             this.finish();
         }
     }
-
+/*
     @Override
     public void onFragmentOpen() {
-    /*    mActionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);*/
-    }
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -273,65 +258,28 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     }
 
 
-    @Override
+  /*  @Override
     public void onQuantityChange(String productid, int quantity) {
-        if (quantity == 0) {
-            for (int i = 0; i < mProductArray.size(); i++) {
-                if (mProductArray.get(i).getProductId().equals(productid)) {
-                    mProductArray.remove(i);
-                }
-            }
-        } else {
-            for (int i = 0; i < mProductArray.size(); i++) {
-                if (mProductArray.get(i).getProductId().equals(productid)) {
-                    int count = mProductArray.get(i).getCount();
-                    mProductArray.get(i).setCount(count + quantity);
-                }
-            }
-        }
+
 
         saveTempData(mProductArray);
-    }
-
+    }*/
+/*
     private void saveTempData(ArrayList<ProductItem> mProductArray) {
 
         String json = gson.toJson(mProductArray);
         prefsEditor.putString("tempdata", json);
         prefsEditor.commit();
-    }
+    }*/
 
+/*
 
     @Override
     public void onScanResult(JSONObject obj, int scantype) {
-        String id = obj.optString("id");
-        ProductItem dbItem = mDB.getProductItem(id);
-        if (dbItem != null) {
-            if (mProductArray.size() > 0) {
-                ProductItem item = null;
-                for (int i = 0; i < mProductArray.size(); i++) {
-                    if (mProductArray.get(i).getProductId().equals(id)) {
-                        item = mProductArray.get(i);
-                        if (firstFragment != null)
-
-                            Toast.makeText(getApplicationContext(), item.getProductName() + " added", Toast.LENGTH_SHORT).show();
-                        int count = item.getCount();
-                        item.setCount(count + 1);
-                        item.setScantype(scantype);
-
-                    }
-                }
-                if (item == null)
-                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype));
-            } else {
-                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype));
-            }
-
-        } else {
-            Toast.makeText(this, "Item not found on Database", Toast.LENGTH_SHORT).show();
-        }
 
         saveTempData(mProductArray);
     }
+*/
 
 
     private void handleIntent(Intent intent) {
@@ -489,9 +437,8 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
 
                 Log.e(TAG, "==" + result);
                 try {
-                    onScanResult(new JSONObject(result), 1);
                     if (firstFragment != null)
-                        ((HomeFragment) firstFragment).openScanListFrag(new JSONObject(result));
+                        ((HomeFragment) firstFragment).openScanListFrag(new JSONObject(result),1);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

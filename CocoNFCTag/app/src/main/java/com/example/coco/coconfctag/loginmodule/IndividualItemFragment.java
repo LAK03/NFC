@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class IndividualItemFragment extends Fragment implements View.OnClickListener {
@@ -80,14 +82,12 @@ public class IndividualItemFragment extends Fragment implements View.OnClickList
             case R.id.add_wish_btn:
                 boolean isloggedin = prefs.getBoolean("isloggedin", false);
                 String username = prefs.getString("username", "");
-                if(isloggedin) {
+                if (isloggedin) {
                     if (!(mDb.wishlistAlreadyAdded(username, item.getProductId()))) {
                         mDb.addToWishlist(item.getProductId(), username);
                         Toast.makeText(getContext(), "Added to Wishlist", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getContext(), "Please login to continue", Toast.LENGTH_SHORT).show();
                 }
                 break;

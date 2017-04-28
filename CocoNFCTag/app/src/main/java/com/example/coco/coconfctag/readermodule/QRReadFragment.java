@@ -4,18 +4,12 @@ package com.example.coco.coconfctag.readermodule;
  * Created by cocoadmin on 3/20/2017.
  */
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +20,12 @@ import android.widget.Toast;
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.barcode.BarcodeCaptureActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class QRReadFragment extends Fragment implements View.OnClickListener {
 
