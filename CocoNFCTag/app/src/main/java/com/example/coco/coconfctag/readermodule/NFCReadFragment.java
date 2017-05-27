@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
 import com.example.coco.coconfctag.database.DatabaseHandler;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;

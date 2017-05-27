@@ -32,6 +32,17 @@
             android:title="WishList" />
     </group>
     <group
+        android:id="@+id/grp4"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_history"
+            android:checked="false"
+            android:icon="@drawable/ic_list_fav"
+            android:title="My order History" />
+    </group>
+
+    <group
         android:id="@+id/grp6"
         android:checkableBehavior="single">
 
@@ -70,5 +81,15 @@
             android:checked="false"
             android:icon="@drawable/ic_logout"
             android:title="Logout" />
+    </group>
+    <group
+        android:id="@+id/grp10"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_login"
+            android:checked="false"
+            android:icon="@drawable/ic_logout"
+            android:title="Log In" />
     </group>
 </menu>

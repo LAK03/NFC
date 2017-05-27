@@ -1,14 +1,11 @@
 package com.example.coco.coconfctag.loginmodule;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
-import com.example.coco.coconfctag.activity.MainActivity;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.QuantityListener;
-import com.example.coco.coconfctag.multireadmodule.CartProductAdapter;
-import com.example.coco.coconfctag.readermodule.ProductItem;
-
-import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,12 +35,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ImageView mSettingsImg;
     private SharedPreferences.Editor editor;
 
+    public static int getValue() {
+        return value;
+    }
+
+    public static void setValue(int value) {
+        LoginFragment.value = value;
+    }
+
+    private static int value =0;
 
 
     private TextView mCountTxtView;
     private TextView mTitleTxtView;
     private ImageView mCartImg;
     private RelativeLayout mSearchLayout;
+
 
 
     @Override
@@ -89,6 +90,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mCartImg.setVisibility(View.GONE);
         mSearchLayout = (RelativeLayout) getActivity().findViewById(R.id.search_layout);
         mSearchLayout.setVisibility(View.GONE);
+
+
     }
 
     @Override
@@ -125,7 +128,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "Successfully Logged In", Toast.LENGTH_SHORT).show();
          /*   Intent i = new Intent(getContext(), MainActivity.class);
             startActivity(i);*/
-        getActivity().getSupportFragmentManager().popBackStack();
+            mSearchLayout.setVisibility(View.VISIBLE);
+
+            while(value > 0)
+            {
+                getActivity().getSupportFragmentManager().popBackStack();
+                value --;
+            }
         }
     }
 

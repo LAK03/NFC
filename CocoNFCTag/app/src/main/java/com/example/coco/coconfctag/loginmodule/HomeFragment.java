@@ -1,5 +1,6 @@
 package com.example.coco.coconfctag.loginmodule;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,27 +8,32 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coco.coconfctag.R;
+import com.example.coco.coconfctag.cartmodule.CartFragment;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.LockNavigationListener;
 import com.example.coco.coconfctag.listeners.QuantityListener;
 import com.example.coco.coconfctag.listeners.ScanResultListener;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ScannedListFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by cocoadmin on 3/16/2017.
@@ -35,24 +41,32 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, QuantityListener, ScanResultListener {
 
-
     private LinearLayout mLLayout1, mLLayout2, mLLayout3;
-    private DatabaseHandler mDB;
     private ArrayList<ProductItem> mProductArray = new ArrayList<>();
-    private LockNavigationListener mLockNavLis;
     private TextView mTitleTxtView;
     private CoordinatorLayout coordinatorLayout;
-    private ScanResultListener mScanListener;
-    private QuantityListener mQuantityListener;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor prefsEditor;
     private TextView mCountTxtView;
     private ImageView mCartImg;
     Fragment firstFragment = null;
-    private int scanTypeFlag=0;
+    private int scanTypeFlag = 0;
+    private DatabaseHandler mDB;
+    private Gson gson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProductArray = getArguments().getParcelableArrayList("productarray");
+        prefs = getContext().getSharedPreferences("cocosoft", MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+        gson = new Gson();
+        String tempdata = prefs.getString("tempscanlist", null);
+        Type type = new TypeToken<List<ProductItem>>() {
+        }.getType();
+        ArrayList<ProductItem> arr = gson.fromJson(tempdata, type);
+        if (arr != null) {
+            mProductArray = gson.fromJson(tempdata, type);
+        }
     }
 
     @Nullable
@@ -76,17 +90,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Quan
         mLLayout3.setOnClickListener(this);
     }
 
-    public void setListener(LockNavigationListener lis, QuantityListener qlis, ScanResultListener scanlis) {
-        mLockNavLis = lis;
-        mQuantityListener = qlis;
-        mScanListener = scanlis;
-    }
 
     private void init(View v) {
         mLLayout1 = (LinearLayout) v.findViewById(R.id.llay1);
         mLLayout2 = (LinearLayout) v.findViewById(R.id.llay2);
         mLLayout3 = (LinearLayout) v.findViewById(R.id.llay3);
-
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mTitleTxtView = (TextView) toolbar.findViewById(R.id.title_txt);
         mCountTxtView = (TextView) toolbar.findViewById(R.id.total_count);
@@ -96,8 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Quan
         mCartImg.setOnClickListener(this);
         mCountTxtView.setVisibility(View.VISIBLE);
         mCartImg.setVisibility(View.VISIBLE);
-
-
+        mDB = new DatabaseHandler(getContext());
     }
 
     @Override
@@ -106,48 +113,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Quan
             case R.id.llay1:
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "NFC Enabled", Snackbar.LENGTH_SHORT);
                 snackbar.show();
+                scanTypeFlag = 1;
                 break;
             case R.id.llay2:
-                openFrag(1,true);
-                scanTypeFlag=2;
+                scanTypeFlag = 2;
+                openFrag(1, true);
                 break;
             case R.id.llay3:
-                openFrag(1,true);
-                scanTypeFlag=3;
+                scanTypeFlag = 3;
+                openFrag(1, true);
                 break;
             case R.id.cart_img:
-
-                openFrag(2,false);
-
+                openFrag(2, false);
                 break;
         }
     }
 
-    private void openFrag(int i,boolean cameraflag) {
-
+    private void openFrag(int i, boolean cameraflag) {
         switch (i) {
-            case 0:
-                firstFragment = new NFCRead1Fragment();
-                break;
             case 1:
                 firstFragment = new ScannedListFragment();
-                ((ScannedListFragment) firstFragment).setListener(this, this);
+                ((ScannedListFragment) firstFragment).setInterface(this, this);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("productarray", mProductArray);
                 bundle.putBoolean("isscan", cameraflag);
+                bundle.putInt("scantype", scanTypeFlag);
                 firstFragment.setArguments(bundle);
-                mLockNavLis.onFragmentOpen();
                 break;
             case 2:
                 firstFragment = new CartFragment();
-                ((CartFragment) firstFragment).setListener(this);
-                Bundle bundles = new Bundle();
-                bundles.putParcelableArrayList("productarray", mProductArray);
-                firstFragment.setArguments(bundles);
-                mLockNavLis.onFragmentOpen();
                 break;
-
-
         }
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -157,19 +152,61 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Quan
         fragmentTransaction.commit();
     }
 
+
+    public void openScanListFrag(JSONObject jsonObject, int flag) {
+        onScanResult(jsonObject, flag);
+        openFrag(1, false);
+    }
+
+
     @Override
     public void onQuantityChange(String productid, int quantity) {
-        mQuantityListener.onQuantityChange(productid, quantity);
+        if (quantity == 0) {
+            for (int i = 0; i < mProductArray.size(); i++) {
+                if (mProductArray.get(i).getProductId().equals(productid)) {
+                    mProductArray.remove(i);
+                }
+            }
+        } else {
+            for (int i = 0; i < mProductArray.size(); i++) {
+                if (mProductArray.get(i).getProductId().equals(productid)) {
+                    int count = mProductArray.get(i).getCount();
+                    mProductArray.get(i).setCount(count + quantity);
+                }
+            }
+        }
+        String json = gson.toJson(mProductArray);
+        prefsEditor.putString("tempscanlist", json);
+        prefsEditor.commit();
     }
 
     @Override
-    public void onScanResult(JSONObject obj,int scantype) {
-        mScanListener.onScanResult(obj,scanTypeFlag);
+    public void onScanResult(JSONObject obj, int scantype) {
+        String id = obj.optString("id");
+        ProductItem dbItem = mDB.getProductItem(id);
+        if (dbItem != null) {
+            if (mProductArray.size() > 0) {
+                ProductItem item = null;
+                for (int i = 0; i < mProductArray.size(); i++) {
+                    if (mProductArray.get(i).getProductId().equals(id)) {
+                        item = mProductArray.get(i);
+                        Toast.makeText(getContext(), item.getProductName() + " added", Toast.LENGTH_SHORT).show();
+                        int count = item.getCount();
+                        item.setCount(count + 1);
+                        item.setScantype(scantype);
+                    }
+                }
+                if (item == null) {
+                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype, false));
+                }
+            } else {
+                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype, false));
+            }
+        } else {
+            Toast.makeText(getContext(), "Item not found on Database", Toast.LENGTH_SHORT).show();
+        }
+        String json = gson.toJson(mProductArray);
+        prefsEditor.putString("tempscanlist", json);
+        prefsEditor.commit();
     }
-
-    public void openScanListFrag(JSONObject jsonObject) {
-        openFrag(1,false);
-    }
-
-
 }

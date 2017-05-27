@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "328354366069",
+    "project_id": "coconfctag"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328354366069:android:822ec475331218ba",
+        "android_client_info": {
+          "package_name": "com.example.coco.coconfctag.loginmodule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328354366069-8sdfgnit5g89ae5hpnoij2b8ujscrlcs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coco.coconfctag.loginmodule",
+            "certificate_hash": "eedb6d3a157a22d248af3d5813e34ea09027f063"
+          }
+        },
+        {
+          "client_id": "328354366069-01imkkuifcju30roq5uapiehnmstsf12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtYIAAiAfQqqwrE-yqNE6riVpqLxgW_nI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

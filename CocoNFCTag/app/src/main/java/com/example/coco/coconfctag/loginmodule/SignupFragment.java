@@ -4,8 +4,9 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
     @Override
     public void onResume() {
         super.onResume();
-        mTitleTxtView.setText("SignUp");
+     mTitleTxtView.setText("SignUp");
     }
     private void init(View v) {
         mUserNameEdtTxt = (EditText) v.findViewById(R.id.username_etxt);
@@ -64,6 +65,7 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
         mWarnTxt = (TextView) v.findViewById(R.id.warning_txt);
         mDOBTxt = (TextView) v.findViewById(R.id.dob_txt);
         mDB = new DatabaseHandler(getContext());
+
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mCountTxtView = (TextView) toolbar.findViewById(R.id.total_count);
         mTitleTxtView = (TextView) toolbar.findViewById(R.id.title_txt);
@@ -105,6 +107,20 @@ public class SignupFragment extends Fragment implements View.OnClickListener, Da
         } else {
             mDB.addUser(new UserItem("", mUserNameEdtTxt.getText().toString().trim(), mConfirmPwdEdtTxt.getText().toString().trim()));
             Toast.makeText(getContext(), "Account Created", Toast.LENGTH_SHORT).show();
+            //int count = getActivity().getSupportFragmentManager().getBackStackEntryCount();
+            //if(count >1)
+
+
+            LoginFragment.setValue(3);
+
+            Fragment firstFragment = null;
+            firstFragment = new LoginFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.frame, firstFragment, "h");
+            fragmentTransaction.addToBackStack("h");
+            fragmentTransaction.commit();
         }
     }
 

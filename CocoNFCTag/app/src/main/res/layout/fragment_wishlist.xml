@@ -4,14 +4,22 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/dp2">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_above="@+id/footer"
+    android:layout_alignParentTop="true">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footer"
-        android:layout_alignParentTop="true"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content">
 
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"

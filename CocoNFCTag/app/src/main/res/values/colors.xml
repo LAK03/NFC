@@ -3,10 +3,10 @@
     <color name="colorPrimary">#689a92</color>
     <color name="colorPrimaryDark">#0180aa</color>
     <color name="colorAccent">#689a92</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="grey_69">#696969</color>
     <color name="grey_89">#898989</color>
-    <color name="blue_light">#3Faaff</color>
+    <color name="blue_light">#3faaff</color>
     <color name="grey_AC">#acacac</color>
     <color name="red">#ff3232</color>
     <color name="grey_f9">#f9f9f9</color>
@@ -19,13 +19,14 @@
     <color name="grey_ed">#ededed</color>
     <color name="black">#000000</color>
     <color name="grey_15">#151515</color>
-    <color name="yellow1">#F9E60E</color>
+    <color name="yellow1">#eedc19</color>
     <color name="yellow2">#F9F89D</color>
-    <color name="orange4">#F7BE45</color>
+    <color name="orange4">#f1a63e</color>
     <color name="orange5">#F7D896</color>
     <color name="blue2">#19FCDA</color>
-    <color name="blue25">#D9F7F2</color>
+    <color name="blue25">#d9f7f2</color>
     <color name="grey05">#ACA899</color>
     <color name="white1">#FFFFFF</color>
     <color name="white2">#DDDDDD</color>
+    <color name="M_RED">#a1241f</color>
 </resources>

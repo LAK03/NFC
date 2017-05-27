@@ -2,6 +2,7 @@ package com.example.coco.coconfctag.loginmodule;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,7 +14,6 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,15 +28,40 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coco.coconfctag.NfcWriter;
 import com.example.coco.coconfctag.R;
+import com.example.coco.coconfctag.cartmodule.CartFragment;
+import com.example.coco.coconfctag.cartmodule.CartItem;
 import com.example.coco.coconfctag.database.DatabaseHandler;
-import com.example.coco.coconfctag.listeners.LockNavigationListener;
-import com.example.coco.coconfctag.listeners.QuantityListener;
-import com.example.coco.coconfctag.listeners.ScanResultListener;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.orderHistory.OrderHistory;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
+import com.example.coco.coconfctag.wishlistmodule.WishListFragment;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.LoggingBehavior;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,7 +75,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class LoginActivity extends AppCompatActivity implements LockNavigationListener, View.OnClickListener, QuantityListener, ScanResultListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
 
     private SearchView mSearchView;
     private NavigationView mNavigationView;
@@ -59,15 +84,33 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private ImageView mCartImg;
     private DatabaseHandler mDB;
-    private ArrayList<ProductItem> mProductArray = new ArrayList<>();
     private NfcAdapter mNfcAdapter;
     private Context context;
     public static final String TAG = "NFCReaderDemo";
     public static final String MIME_TEXT_PLAIN = "text/plain";
     private Fragment firstFragment = null;
     private SharedPreferences appSharedPrefs;
-    private SharedPreferences.Editor prefsEditor;
     private Gson gson;
+    private ArrayList<CartItem> mCartArray=new ArrayList<>();
+    private TextView mCountTxtView;
+    private TextView _usrName;
+    private RelativeLayout mSearchLayout;
+
+    String userName = "";
+    int Flag=0;
+
+    private SharedPreferences.Editor editor;
+    private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog mProgressDialog;
+    private static final int RC_SIGN_IN = 9001;
+    GoogleSignInAccount acct;
+
+
+
+    private CallbackManager mCallbackManager;
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,15 +121,92 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_login);
+/*Login with Facebook*/
 
         init();
         openFrag(0);
+
+
+        Profile fbProfile = Profile.getCurrentProfile();
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                       AccessToken currentAccessToken) {
+                if (currentAccessToken == null) {
+                    Log.d(TAG, "onLogout catched");
+
+                }
+            }
+        };
+
+
+            mCallbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().registerCallback(mCallbackManager,
+                    new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResults) {
+
+                            GraphRequest request = GraphRequest.newMeRequest(
+                                    AccessToken.getCurrentAccessToken(),
+                                    new GraphRequest.GraphJSONObjectCallback() {
+                                        @Override
+                                        public void onCompleted(JSONObject object, GraphResponse response) {
+                                            FacebookSdk.setIsDebugEnabled(true);
+                                            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+                                            Profile profile = Profile.getCurrentProfile();
+                                            Log.d("Anusha","FACEBOOK success");
+                                            if (profile != null) {
+
+                                                Log.d("Anusha","profile");
+                                                userName = profile.getName();
+
+                                                updateUI(true,userName);
+
+                                            }
+
+                                        }
+                                    });
+
+                            request.executeAsync();
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                            Log.e("dd", "facebook login canceled");
+
+                        }
+
+                        @Override
+                        public void onError(FacebookException e) {
+
+                            Log.e("dd", "facebook login failed error");
+
+                        }
+
+                    });
+
+        accessTokenTracker.startTracking();
+
+/*Login with Google*/
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
     }
 
     private void init() {
         context = this;
-        gson = new Gson();
+
         mSearchView = (SearchView) findViewById(R.id.search_view);
         mSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,25 +218,25 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mCartImg = (ImageView) findViewById(R.id.cart_img);
+        mCountTxtView = (TextView)findViewById(R.id.total_count);
         mCartImg.setOnClickListener(this);
+        mSearchLayout = (RelativeLayout)findViewById(R.id.search_layout);
+
         setSupportActionBar(mToolbar);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         initNavigationDrawer();
         mDB = new DatabaseHandler(this);
-        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1, 0));
-        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1, 0));
-        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1, 0));
-        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1, 0));
-        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1, 0));
+        mDB.addProduct(new ProductItem("501", "Dove Soap", 20, 1, 0, false));
+        mDB.addProduct(new ProductItem("502", "Dove Shampoo", 30, 1, 0, false));
+        mDB.addProduct(new ProductItem("503", "Fair & Lovely", 25, 1, 0, false));
+        mDB.addProduct(new ProductItem("504", "Fog Perfume", 50, 1, 0, false));
+        mDB.addProduct(new ProductItem("505", "Hair Oil", 40, 1, 0, false));
         appSharedPrefs = getSharedPreferences("cocosoft", MODE_PRIVATE);
-        prefsEditor = appSharedPrefs.edit();
-        String tempdata = appSharedPrefs.getString("tempdata", null);
 
-        Type type = new TypeToken<List<ProductItem>>() {}.getType();
-        ArrayList<ProductItem> arr=gson.fromJson(tempdata, type);
-        if(arr!=null)
-        mProductArray = gson.fromJson(tempdata, type);
+        _usrName = (TextView)findViewById(R.id.userName);
+
+
     }
 
     private void initNavigationDrawer() {
@@ -155,11 +275,26 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
                         Intent intent = new Intent(context, NfcWriter.class);
                         startActivity(intent);
                         return true;
+                    case R.id.menu_login:
+                        openFrag(1);
+                        return true;
+                    case R.id.menu_history:
+                        openFrag(6);
+                        return true;
+                    case R.id.menu_logout:
+                       // handleLogout();
+                        _usrName.setText("");
+                        signOut();
+                        fb_logOut();
+                        _usrName.setText("");
+                        appSharedPrefs.edit().putBoolean("isloggedin",false).commit();
+                        return true;
                     default:
                         return true;
                 }
             }
         });
+
         // Initializing Drawer Layout and ActionBarToggle
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name) {
             @Override
@@ -175,6 +310,19 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
             public void onDrawerOpened(View drawerView) {
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
+                boolean isloggedin = appSharedPrefs.getBoolean("isloggedin", false);
+                Menu menu = mNavigationView.getMenu();
+                MenuItem loginitem = menu.findItem(R.id.menu_login);
+                MenuItem logoutitem = menu.findItem(R.id.menu_logout);
+                if (isloggedin) {
+                    loginitem.setVisible(false);
+                    logoutitem.setVisible(true);
+                }
+                else
+                {
+                    loginitem.setVisible(true);
+                    logoutitem.setVisible(false);
+                }
             }
         };
         //Setting the actionbarToggle to drawer layout
@@ -192,6 +340,8 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
                     mActionBarDrawerToggle.setDrawerIndicatorEnabled(true);
                     mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }*/
+
+               changeCount();
             }
         });
         mActionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -203,24 +353,156 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
         });
     }
 
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            Flag =1;
+            handleSignInResult(result);
+
+        } else {
+
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+
+                }
+            });
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+        else
+        {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+
+        }
+
+
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+
+            acct = result.getSignInAccount();
+
+            if(Flag ==0)
+                updateUI(true,acct.getDisplayName());
+
+        } else {
+
+            updateUI(false,null);
+        }
+    }
+
+    public void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    private void updateUI(boolean signedIn,String userName) {
+        if (signedIn) {
+
+            editor = getSharedPreferences("cocosoft", MODE_PRIVATE).edit();
+            editor.putBoolean("isloggedin", true);
+            editor.putString("username",userName );
+            editor.commit();
+            _usrName.setText("Hi "+userName);
+            mSearchLayout.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().popBackStack();
+
+        } else {
+
+
+           // Toast.makeText(this,"User Not Signed IN",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+    public void signOut() {
+
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // [START_EXCLUDE]
+                            updateUI(false,null);
+                            Flag =0;
+                            // [END_EXCLUDE]
+                        }
+                    });
+    }
+
+
+
+    private void fb_logOut()
+    {
+
+        LoginManager.getInstance().logOut();
+
+    }
+
+public void fb_login()
+{
+    LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+}
+
+
+
+
+
     private void openFrag(int i) {
         switch (i) {
             case 0:
                 firstFragment = new HomeFragment();
-                ((HomeFragment) firstFragment).setListener(this, this, this);
-                Bundle bundles = new Bundle();
-                bundles.putParcelableArrayList("productarray", mProductArray);
-                firstFragment.setArguments(bundles);
                 break;
             case 1:
-                firstFragment = new LoginFragment();
+                firstFragment = new SigninFragment();
                 break;
             case 2:
                 firstFragment = new CartFragment();
-                ((CartFragment) firstFragment).setListener(this);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("productarray", mProductArray);
-                firstFragment.setArguments(bundle);
                 break;
             case 3:
                 firstFragment = new EditProfileFragment();
@@ -230,10 +512,13 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
                 break;
             case 5:
                 boolean isloggedin = appSharedPrefs.getBoolean("isloggedin", false);
-                if(isloggedin)
-                firstFragment = new WishListFragment();
+                if (isloggedin)
+                    firstFragment = new WishListFragment();
                 else
-                    Toast.makeText(getApplicationContext(),"Please login to continue",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please login to continue", Toast.LENGTH_SHORT).show();
+                break;
+            case 6 :
+                firstFragment = new OrderHistory();
                 break;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -255,12 +540,12 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
             this.finish();
         }
     }
-
+/*
     @Override
     public void onFragmentOpen() {
-    /*    mActionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);*/
-    }
+        mActionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -273,66 +558,28 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     }
 
 
-    @Override
+  /*  @Override
     public void onQuantityChange(String productid, int quantity) {
-        if (quantity == 0) {
-            for (int i = 0; i < mProductArray.size(); i++) {
-                if (mProductArray.get(i).getProductId().equals(productid)) {
-                    mProductArray.remove(i);
-                }
-            }
-        } else {
-            for (int i = 0; i < mProductArray.size(); i++) {
-                if (mProductArray.get(i).getProductId().equals(productid)) {
-                    int count = mProductArray.get(i).getCount();
-                    mProductArray.get(i).setCount(count + quantity);
-                }
-            }
-        }
+
 
         saveTempData(mProductArray);
-    }
-
+    }*/
+/*
     private void saveTempData(ArrayList<ProductItem> mProductArray) {
 
         String json = gson.toJson(mProductArray);
         prefsEditor.putString("tempdata", json);
         prefsEditor.commit();
-    }
+    }*/
 
+/*
 
     @Override
     public void onScanResult(JSONObject obj, int scantype) {
-        String id = obj.optString("id");
-        ProductItem dbItem = mDB.getProductItem(id);
-        if (dbItem != null) {
-            if (mProductArray.size() > 0) {
-                ProductItem item = null;
-                for (int i = 0; i < mProductArray.size(); i++) {
-                    if (mProductArray.get(i).getProductId().equals(id)) {
-                        item = mProductArray.get(i);
-                        if (firstFragment != null)
-
-                            Toast.makeText(getApplicationContext(), item.getProductName() + " added", Toast.LENGTH_SHORT).show();
-                        int count = item.getCount();
-                        item.setCount(count + 1);
-                        item.setScantype(scantype);
-
-                    }
-                }
-                if (item == null)
-                    mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype));
-            } else {
-                mProductArray.add(new ProductItem(id, dbItem.getProductName(), dbItem.getProductPrice(), 1, scantype));
-            }
-
-        } else {
-            Toast.makeText(this, "Item not found on Database", Toast.LENGTH_SHORT).show();
-        }
 
         saveTempData(mProductArray);
     }
-
+*/
 
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
@@ -367,6 +614,27 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
          */
         if (mNfcAdapter != null)
             setupForegroundDispatch(this, mNfcAdapter);
+
+        changeCount();
+    }
+
+    private void changeCount() {
+        int mCount=0;
+        gson=new Gson();
+        String tempdata = appSharedPrefs.getString("tempcartlist", null);
+        Type type = new TypeToken<List<CartItem>>() {}.getType();
+        ArrayList<CartItem> arr=gson.fromJson(tempdata, type);
+        if(arr!=null) {
+            mCartArray = gson.fromJson(tempdata, type);
+        }
+        for (int i = 0; i < mCartArray.size(); i++) {
+            if (mCartArray.get(i).getCount()>0) {
+                {
+                    mCount = mCount + mCartArray.get(i).getCount();
+                }
+            }
+        }
+        mCountTxtView.setText("" + mCount);
     }
 
     @Override
@@ -422,6 +690,7 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
     public static void stopForegroundDispatch(final Activity activity, NfcAdapter adapter) {
         adapter.disableForegroundDispatch(activity);
     }
+
 
     /**
      * Background task for reading the data. Do not block the UI thread while reading.
@@ -489,9 +758,8 @@ public class LoginActivity extends AppCompatActivity implements LockNavigationLi
 
                 Log.e(TAG, "==" + result);
                 try {
-                    onScanResult(new JSONObject(result), 1);
                     if (firstFragment != null)
-                        ((HomeFragment) firstFragment).openScanListFrag(new JSONObject(result));
+                        ((HomeFragment) firstFragment).openScanListFrag(new JSONObject(result), 1);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

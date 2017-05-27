@@ -12,10 +12,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.coco.coconfctag.loginmodule.UserItem;
-import com.example.coco.coconfctag.readermodule.ProductItem;
+import com.example.coco.coconfctag.scanlistmodule.ProductItem;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -26,14 +31,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT = "producttable";
     private static final String TABLE_CART = "carttable";
     private static final String TABLE_WISHLIST = "wishlisttable";
+    private static final String TABLE_ORDERHISTORY = "order_history";
     private String USER_NAME = "username";
     private String USER_PASSWORD = "userpassword";
     private String ID = "id";
-    private String PRODUCT_NAME = "productname";
-    private String PRODUCT_ID = "productid";
-    private String PRODUCT_PRICE = "productprice";
-    private String PRODUCT_COUNT = "productcount";
-    private String TAG = "DatabaseHandler";
+
+    public String PRODUCT_NAME = "productname";
+    public String PRODUCT_ID = "productid";
+    public String PRODUCT_PRICE = "productprice";
+    public String PRODUCT_COUNT = "productcount";
+    public String TAG = "DatabaseHandler";
+
+    public String ORDER_REFNO = "order_refNo";
+    public String ENTRYDATE = "ORDER_DATE";
+    public String ORDER_TOTAL_AMOUNT = "order_sum";
+
+
+
+    private String CREATE_TABLE_ORDERHISTORY = "CREATE TABLE " +TABLE_ORDERHISTORY
+            +"(" +ID+
+            " INTEGER PRIMARY KEY AUTOINCREMENT, " +ORDER_REFNO+
+            " VARCHAR, " +PRODUCT_ID+
+            " VARCHAR, " +PRODUCT_NAME+
+            " VARCHAR, " +PRODUCT_PRICE+
+            " INT, " +PRODUCT_COUNT+
+            " INT, " +ENTRYDATE +
+            " VARCHAR ,"+ ORDER_TOTAL_AMOUNT +
+            " VARCHAR );";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,6 +81,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_WISHLIST_TABLE = "CREATE TABLE " + TABLE_WISHLIST + "("
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PRODUCT_ID + " TEXT ," + USER_NAME + " TEXT " + ")";
         db.execSQL(CREATE_WISHLIST_TABLE);
+
+
+        Log.e("Creating the table",CREATE_TABLE_ORDERHISTORY);
+        db.execSQL(CREATE_TABLE_ORDERHISTORY);
     }
 
     @Override
@@ -65,6 +93,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WISHLIST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDERHISTORY);
+        Log.e("Dropping the table",TABLE_ORDERHISTORY);
         onCreate(db);
     }
 
@@ -243,5 +273,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 USER_NAME + "=? AND " + PRODUCT_ID + "=? ",
                 new String[] {username, productid});
         db.close();
+    }
+
+
+    public void insertEntry(String refno,String product_id,String product_name, int price,int count,String ordersum)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMMM-dd");
+        String date = sdf.format(new Date());
+
+        Log.d("Date in database ",date);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues newValues = new ContentValues();
+        newValues.put(ORDER_REFNO, refno);
+        newValues.put(PRODUCT_ID, product_id);
+        newValues.put(PRODUCT_NAME,product_name);
+        newValues.put(PRODUCT_PRICE, price);
+        newValues.put(PRODUCT_COUNT,count);
+        newValues.put(ENTRYDATE, date);
+        newValues.put(ORDER_TOTAL_AMOUNT,ordersum);
+        db.insert(TABLE_ORDERHISTORY, null, newValues);
+        db.close();
+    }
+
+    public Cursor getOrderNumbers()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection ={"DISTINCT "+ORDER_REFNO ,ENTRYDATE,ORDER_TOTAL_AMOUNT};
+        Cursor c = db.query(TABLE_ORDERHISTORY, projection, null, null, null, null, null);
+        int i=c.getCount();
+        Log.e("ORDER_REFNO count",String.valueOf(i));
+
+
+        return c;
+    }
+
+    public Cursor getOrderHistory(String orderNo)
+    {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {ORDER_REFNO,PRODUCT_ID,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_COUNT,ENTRYDATE,ORDER_TOTAL_AMOUNT};
+        String selection =  ORDER_REFNO+ " = ?";
+        String[] selectionArgs = {orderNo};
+
+
+        Cursor c = db.query(TABLE_ORDERHISTORY, projection, selection, selectionArgs, null, null, null);
+        int i=c.getCount();
+        return c;
+
     }
 }

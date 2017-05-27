@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/dp15"
-                android:text="Bar Code"
+                android:text="Barcode"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/black" />
         </LinearLayout>
